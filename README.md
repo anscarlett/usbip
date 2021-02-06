@@ -20,7 +20,24 @@ install package
 
     sudo apt install usbip
     sudo modprobe vhci-hcd
-    sudo usbipd -D
+    
+    # copy systemd/usbipd.service to/ et /systemd/system/usbipd.service
+    sudo systemctl enable usbipd.service
+    sudo systemctl start usbipd.service
+    # verify everything went as expected
+    sudo systemctl status usbipd.service
+    
+    # allow usbip command to be used without entering a password
+    sudo visudo
+    
+    # append the following g line to the end of the file
+    pi ALL=NOPASSWD:/usr/sbin/usbip
+    
+    # this will still require the sudo command, but it will not prompt for the password. Creating an alias will abstract away the sudo command
+    # to do this, edit your .bashrc file and add the following to the alias section
+    alias usbip='sudo usbip'
+    # then reload the .bashrc file
+    source .bashrc 
     
    
 ### Ubuntu 
