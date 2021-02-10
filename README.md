@@ -12,9 +12,48 @@ Configs and instructions for usbip on various platforms combined with using a ra
 * configure client
 * testing
 ### Arch
-install package
+Install package
 
     sudo pacman -S usbip
+To load module on boot, run the following command
+
+    echo "usbip" | sudo tee /etc/modules.d/usbip.conf
+
+Create usbip group and add user to it
+
+    groupadd usbip
+    usermod -aG adrian usbip
+
+
+Allow user of group 'usbip' to execute usbip without a password
+
+Create file using the following command! THIS FILE MUST BE CREATED USING VISUDO
+
+    sudo visudo -f /etc/sudoers.d/usbip
+
+Enter the following line
+
+    %usbip ALL=(ALL) NOPASSWD: /usr/bin/usbip
+
+On system needing usb device
+
+    vim ~/scripts/usbip-attach-all.sh
+    
+    usbip attach -r 192.168.145.215 -d 1-1.2
+    usbip attach -r 192.168.145.215 -d 1-1.3
+    usbip attach -r 192.168.145.215 -d 1-1.4
+
+On system hosting usb device
+
+    vim ~/scripts/usbip-attach-all-crimson.sh
+
+    usbip bind -b 1-1.2
+    usbip bind -b 1-1.3
+    usbip bind -b 1-1.4
+    ssh -i /home/pi/.ssh/id_rsa adrian@192.168.145.229 ./scripts/usbip-attach-all.sh
+
+    chmod +x ~/scripts/usbip-attach-all-crimson.sh
+    
 ### Debian
 install package
 
