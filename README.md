@@ -30,8 +30,8 @@ install package
     # allow usbip command to be used without entering a password
     sudo visudo
     
-    # append the following g line to the end of the file
-    pi ALL=NOPASSWD:/usr/sbin/usbip
+    # append the following g line to the end of the file to allow members of the group %usbip to run the command 'sudo usbip' without a password prompt
+    %usbip ALL=(ALL) NOPASSWD: /usr/sbin/usbip
     
     # this will still require the sudo command, but it will not prompt for the password. Creating an alias will abstract away the sudo command
     # to do this, edit your .bashrc file and add the following to the alias section
